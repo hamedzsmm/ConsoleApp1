@@ -21,7 +21,7 @@ while (true)
     }
 
     var random = new Random();
-    var delaySeconds = random.Next(15, 30);
+    var delaySeconds = random.Next(9, 16);
     Log.Information($"Waiting {delaySeconds} seconds\n");
     await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
 }
@@ -68,15 +68,21 @@ async Task CheckPortfolioByPersonIdAsync(int id)
                 null :
                 Convert.ToDecimal(element.Children[8].GetElementsByClassName("data_value").First().Text().GetNumber());
 
-            portfolio.Add(new TradeItem(symbol,
-                type,
-                volume,
-                openingDateTime,
-                entryPoint,
-                currentLevel,
-                stopLoss,
-                takeProfit,
-                profit));
+            var approvedTypes = new List<string>
+            {
+                "buy",
+                "sell"
+            };
+            if (approvedTypes.Contains(type.ToLower().Trim()))
+                portfolio.Add(new TradeItem(symbol,
+                    type,
+                    volume,
+                    openingDateTime,
+                    entryPoint,
+                    currentLevel,
+                    stopLoss,
+                    takeProfit,
+                    profit));
         }
     else
     {

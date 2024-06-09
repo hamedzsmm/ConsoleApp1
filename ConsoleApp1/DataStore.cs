@@ -7,9 +7,10 @@
         {
             return new List<Person>
             {
-                new(1,1120932, "@demaq"),
-                new(2,1428766, "@Titans Group"),
-                new(3,1143035, "@TradingSCapital")
+                new(1, 1120932, "@demaq"),
+                new(2, 1428766, "@Titans Group"),
+                new(3, 1143035, "@TradingSCapital"),
+                new(4, 1482407, "@BEATFXPH")
             };
         }
     }
@@ -40,7 +41,7 @@
                 return new ListDifference<TradeItem>();
             }
 
-            var diff = ListComparer.FindDifferences(tradeItems, PortfolioTradeItems, q => q.OpeningDateAndTime);
+            var diff = ListComparer.FindDifferences(PortfolioTradeItems, tradeItems, q => q.Id);
             UpdateDate = DateTime.Now;
             PortfolioTradeItems = tradeItems;
             return diff;

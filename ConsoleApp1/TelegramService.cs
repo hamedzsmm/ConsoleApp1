@@ -12,7 +12,8 @@ namespace ConsoleApp1
         const string TelegramToken = "7247068109:AAHCrGWtht6PpCx8bGNgKqHsqNaYA7PERig";
         private static readonly List<long> Participants = new()
         {
-            106291548   //Hamed
+            106291548,   //Hamed
+            62429349     //Hamid
         };
         private static DateTime? LastErrorMessageSentTime = null;
 
@@ -21,9 +22,9 @@ namespace ConsoleApp1
         public static async Task SendMessageByDifference(ListDifference<TradeItem> difference, Person person)
         {
             var sb = new StringBuilder();
-            sb.Append($"$$$$$$ <b>{person.Handle}</b> $$$$$$\n");
+            sb.Append($"$$$$$$ <b><a href='{person.PortfolioPage}'>{person.Handle}</a></b> $$$$$$\n");
 
-            sb.Append($"<b>Added Into Portfolio</b> :\n");
+            sb.Append($"<b>Added (Open) Into Portfolio</b> :\n");
             var index = 0;
             if (difference.Added != null)
                 foreach (var tradeItem in difference.Added)
@@ -31,12 +32,12 @@ namespace ConsoleApp1
                     sb.Append($"{++index}) <b>{tradeItem.Type}</b> <i>{tradeItem.Symbol}</i> at <i>{tradeItem.EntryPoint}</i> and tp: <i>{tradeItem.TakeProfit}</i> [{tradeItem.OpeningDateAndTime}]\n");
                 }
 
-            sb.Append($"<b>Deleted From Portfolio</b> :\n");
+            sb.Append($"<b>Deleted (Close) From Portfolio</b> :\n");
             index = 0;
             if (difference.Deleted != null)
                 foreach (var tradeItem in difference.Deleted)
                 {
-                    sb.Append($"{++index}) <b>{tradeItem.Type}</b> <i>{tradeItem.Symbol}</i> at <i>{tradeItem.EntryPoint}</i> and tp: <i>{tradeItem.TakeProfit}</i> [{tradeItem.OpeningDateAndTime}]\n");
+                    sb.Append($"{++index}) <b>{tradeItem.Type}</b> <i>{tradeItem.Symbol}</i> at <i>{tradeItem.EntryPoint}</i> and profit : <i>{tradeItem.Profit} USD</i> [{tradeItem.OpeningDateAndTime}]\n");
                 }
 
             await SendMessageToAllParticipantsAsync(sb.ToString());

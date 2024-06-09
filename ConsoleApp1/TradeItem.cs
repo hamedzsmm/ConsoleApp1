@@ -32,4 +32,5 @@ public class TradeItem
     public decimal? StopLoss { get; private set; }
     public decimal? TakeProfit { get; private set; }
     public decimal? Profit { get; private set; }
+    public string Id => $"{Type.ToLower().Trim()}-{Symbol.ToLower().Trim()}-{OpeningDateAndTime}";
 }
