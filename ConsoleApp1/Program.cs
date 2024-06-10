@@ -33,7 +33,7 @@ mainLoop:
     catch (Exception ex)
     {
         Log.Error($"{ex.Message}");
-        await TelegramService.SendMessageAsync(ex.Message);
+        await TelegramService.SendMessageAsync(ex.Message, true);
         goto mainLoop;
     }
 }
