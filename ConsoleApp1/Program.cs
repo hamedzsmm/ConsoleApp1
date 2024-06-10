@@ -8,22 +8,34 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
-while (true)
+mainLoop:
 {
-    await CheckPortfolioByPersonIdAsync(nextPersonId);
-    if (nextPersonId == DataStore.Persons.Max(q => q.Id))
+    try
     {
-        nextPersonId = DataStore.Persons.Min(q => q.Id);
-    }
-    else
-    {
-        nextPersonId++;
-    }
+        while (true)
+        {
+            await CheckPortfolioByPersonIdAsync(nextPersonId);
+            if (nextPersonId == DataStore.Persons.Max(q => q.Id))
+            {
+                nextPersonId = DataStore.Persons.Min(q => q.Id);
+            }
+            else
+            {
+                nextPersonId++;
+            }
 
-    var random = new Random();
-    var delaySeconds = random.Next(9, 16);
-    Log.Information($"Waiting {delaySeconds} seconds\n");
-    await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
+            var random = new Random();
+            var delaySeconds = random.Next(9, 16);
+            Log.Information($"Waiting {delaySeconds} seconds\n");
+            await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
+        }
+    }
+    catch (Exception ex)
+    {
+        Log.Error($"{ex.Message}");
+        await TelegramService.SendMessageAsync(ex.Message);
+        goto mainLoop;
+    }
 }
 
 

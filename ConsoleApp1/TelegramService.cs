@@ -41,7 +41,7 @@ namespace ConsoleApp1
                     sb.Append($"{++index}) <b>{tradeItem.Type}</b> <i>{tradeItem.Symbol}</i> at <i>{tradeItem.EntryPoint}</i> and profit : <i>{tradeItem.Profit} USD</i>\n");
                 }
 
-            await SendMessageToAllParticipantsAsync(sb.ToString());
+            await SendMessageAsync(sb.ToString());
             Console.Title = $"{person.Handle} at {DateTime.Now}";
         }
 
@@ -49,17 +49,24 @@ namespace ConsoleApp1
         {
             if (LastErrorMessageSentTime == null ||
                (DateTime.Now - LastErrorMessageSentTime.Value).TotalMinutes > 60)
-                await SendMessageToAllParticipantsAsync(errorMessage);
+                await SendMessageAsync(errorMessage);
         }
 
-        private static async Task SendMessageToAllParticipantsAsync(string message)
+        public static async Task SendMessageAsync(string message, bool onlyToAdmin = false)
         {
             var botClient = new TelegramBotClient($"{TelegramToken}");
-
-            foreach (var participant in Participants)
+            if (onlyToAdmin)
             {
-                await botClient.SendTextMessageAsync(new ChatId(participant),
+                await botClient.SendTextMessageAsync(new ChatId(106291548),
                     message, parseMode: ParseMode.Html);
+            }
+            else
+            {
+                foreach (var participant in Participants)
+                {
+                    await botClient.SendTextMessageAsync(new ChatId(participant),
+                        message, parseMode: ParseMode.Html);
+                }
             }
         }
     }
