@@ -13,7 +13,8 @@ namespace ConsoleApp1
         private static readonly List<long> Participants = new()
         {
             106291548,   //Hamed
-            62429349     //Hamid
+            62429349,    //Hamid
+            93308697     //Pedram
         };
         private static DateTime? LastErrorMessageSentTime = null;
 
@@ -37,7 +38,7 @@ namespace ConsoleApp1
             if (difference.Deleted != null)
                 foreach (var tradeItem in difference.Deleted)
                 {
-                    sb.Append($"{++index}) <b>{tradeItem.Type}</b> <i>{tradeItem.Symbol}</i> at <i>{tradeItem.EntryPoint}</i> and profit : <i>{tradeItem.Profit} USD</i> [{tradeItem.OpeningDateAndTime}]\n");
+                    sb.Append($"{++index}) <b>{tradeItem.Type}</b> <i>{tradeItem.Symbol}</i> at <i>{tradeItem.EntryPoint}</i> and profit : <i>{tradeItem.Profit} USD</i>\n");
                 }
 
             await SendMessageToAllParticipantsAsync(sb.ToString());
