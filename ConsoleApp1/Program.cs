@@ -2,6 +2,7 @@
 using AngleSharp.Dom;
 using ConsoleApp1;
 using Serilog;
+using System;
 int nextPersonId = 1;
 
 Log.Logger = new LoggerConfiguration()
@@ -103,7 +104,7 @@ async Task CheckPortfolioByPersonIdAsync(int id)
         if (!sections.Any())
         {
             Log.Information("Problem in loading content");
-            await TelegramService.SendErrorToAllParticipantsAsync("Problem in loading content");
+            await TelegramService.SendErrorToAdminAsync("Problem in loading content");
         }
     }
 
@@ -114,6 +115,9 @@ async Task CheckPortfolioByPersonIdAsync(int id)
     if ((diff.Added != null && diff.Added.Any()) ||
         (diff.Deleted != null && diff.Deleted.Any()))
     {
+        //store in redis
+        var key = $"CopyTrading:{person.Username}:{DateTime.Now:dd/HH-mm-ss}";
+        await RedisDataService.SetAsync(key, diff, TimeSpan.FromDays(1));
         Log.Information($"Sending Founded Changes From {person.Handle}");
         await TelegramService.SendMessageByDifference(diff, person);
     }

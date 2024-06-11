@@ -7,28 +7,30 @@
         {
             return new List<Person>
             {
-                new(1, 1120932, "@demaq"),
-                new(2, 1428766, "@Titans Group"),
-                new(3, 1143035, "@TradingSCapital"),
-                new(4, 1482407, "@BEATFXPH")
+                new(1, 1120932, "@demaq","demaq"),
+                new(2, 1428766, "@Titans Group","TitansGroup"),
+                new(3, 1143035, "@TradingSCapital", "TradingSCapital"),
+                new(4, 1482407, "@BEATFXPH","BEATFXPH")
             };
         }
     }
 
     public class Person
     {
-        public Person(int id, long userId, string handle)
+        public Person(int id, long userId, string handle, string username)
         {
             UserId = userId;
             Handle = handle;
             Id = id;
             PortfolioTradeItems = null;
             UpdateDate = null;
+            Username = username;
         }
 
         public int Id { get; private set; }
         public long UserId { get; private set; }
         public string Handle { get; private set; }
+        public string Username { get; private set; }
         public DateTime? UpdateDate { get; private set; }
         public List<TradeItem>? PortfolioTradeItems { get; private set; }
 

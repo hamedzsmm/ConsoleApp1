@@ -47,11 +47,11 @@ namespace ConsoleApp1
             Console.Title = $"{person.Handle} at {DateTime.Now}";
         }
 
-        public static async Task SendErrorToAllParticipantsAsync(string errorMessage)
+        public static async Task SendErrorToAdminAsync(string errorMessage)
         {
             if (LastErrorMessageSentTime == null ||
                (DateTime.Now - LastErrorMessageSentTime.Value).TotalMinutes > 60)
-                await SendMessageAsync(errorMessage);
+                await SendMessageAsync(errorMessage, true);
         }
 
         public static async Task SendMessageAsync(string message, bool onlyToAdmin = false)
