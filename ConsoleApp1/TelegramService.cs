@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -10,11 +11,12 @@ namespace ConsoleApp1
         #region Base Informations
 
         const string TelegramToken = "7247068109:AAHCrGWtht6PpCx8bGNgKqHsqNaYA7PERig";
+        private const long TelegramAdminUserId = 106291548;
         private static readonly List<long> Participants = new()
         {
-            106291548,   //Hamed
-            62429349,    //Hamid
-            93308697     //Pedram
+            TelegramAdminUserId,   //Hamed
+            62429349,              //Hamid
+            93308697               //Pedram
         };
         private static DateTime? LastErrorMessageSentTime = null;
 
@@ -57,15 +59,23 @@ namespace ConsoleApp1
             var botClient = new TelegramBotClient($"{TelegramToken}");
             if (onlyToAdmin)
             {
-                await botClient.SendTextMessageAsync(new ChatId(106291548),
+                await botClient.SendTextMessageAsync(new ChatId(TelegramAdminUserId),
                     message, parseMode: ParseMode.Html);
             }
             else
             {
                 foreach (var participant in Participants)
                 {
-                    await botClient.SendTextMessageAsync(new ChatId(participant),
-                        message, parseMode: ParseMode.Html);
+                    try
+                    {
+                        await botClient.SendTextMessageAsync(new ChatId(participant),
+                            message, parseMode: ParseMode.Html);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"{ex.Message}");
+                        await SendMessageAsync(ex.Message, true);
+                    }
                 }
             }
         }
