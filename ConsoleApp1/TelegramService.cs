@@ -73,8 +73,9 @@ namespace ConsoleApp1
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"{ex.Message}");
-                        await SendMessageAsync(ex.Message, true);
+                        var msg = $"participant: {participant} error: {ex.Message}";
+                        Log.Error(msg);
+                        await SendMessageAsync(msg, true);
                     }
                 }
             }
