@@ -117,7 +117,7 @@ async Task CheckPortfolioByPersonIdAsync(int id)
     {
         //store in redis
         var key = $"CopyTrading:{person.Username}:{DateTime.Now:dd/HH-mm-ss}";
-        await RedisDataService.SetAsync(key, diff, TimeSpan.FromDays(1));
+        await RedisDataService.SetAsync(key, diff, TimeSpan.FromHours(1));
         Log.Information($"Sending Founded Changes From {person.Handle}");
         await TelegramService.SendMessageByDifference(diff, person);
     }
