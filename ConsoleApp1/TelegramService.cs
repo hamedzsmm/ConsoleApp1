@@ -75,7 +75,7 @@ namespace ConsoleApp1
                     {
                         var msg = $"participant: {participant} error: {ex.Message}";
                         Log.Error(msg);
-                        await SendMessageAsync(msg, true);
+                        //await SendMessageAsync(msg, true);
                     }
                 }
             }
