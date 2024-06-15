@@ -16,6 +16,10 @@ public class TradeItem
         Symbol = symbol;
         Type = type;
         TradeVolume = tradeVolume;
+
+        if (openingDateAndTime < DateTime.Now.AddMonths(-1))
+            openingDateAndTime = DateTime.Now;
+
         OpeningDateAndTime = openingDateAndTime;
         EntryPoint = entryPoint;
         CurrentLevel = currentLevel;

@@ -26,7 +26,7 @@ mainLoop:
             }
 
             var random = new Random();
-            var delaySeconds = random.Next(9, 16);
+            var delaySeconds = random.Next(6, 13);
             Log.Information($"Waiting {delaySeconds} seconds\n");
             await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
         }
@@ -117,7 +117,7 @@ async Task CheckPortfolioByPersonIdAsync(int id)
     {
         //store in redis
         var key = $"CopyTrading:{person.Username}:{DateTime.Now:dd/HH-mm-ss}";
-        await RedisDataService.SetAsync(key, diff, TimeSpan.FromHours(1));
+        await RedisDataService.SetAsync(key, diff, TimeSpan.FromHours(2));
         Log.Information($"Sending Founded Changes From {person.Handle}");
         await TelegramService.SendMessageByDifference(diff, person);
     }
